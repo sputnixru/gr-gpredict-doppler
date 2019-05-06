@@ -59,6 +59,14 @@ class doppler_runner(threading.Thread):
           sock.sendall("RPRT 0\n")
         elif data.startswith('f'):
           sock.sendall("f: %d\n" % cur_freq)
+        elif data.startswith('AOS'):
+          # Received Acquisition of signal.  Send state up
+          self.blockclass.sendState(True)
+        elif data.startswith('LOS'):
+          # Received loss of signal.  Send state down
+          self.blockclass.sendState(False)
+        else:
+          print "[doppler] received unknown command: %s" % data
 
       sock.close()
       if self.verbose: print "Disconnected from: %s:%d" % (addr[0], addr[1])
@@ -71,8 +79,19 @@ class doppler(gr.sync_block):
     # Init block variables
     doppler_runner(self, callback, gpredict_host, gpredict_port, verbose).start()
     self.message_port_register_out(pmt.intern("freq"))
+    self.message_port_register_out(pmt.intern("state"))
 
   def sendFreq(self,freq):
     p = pmt.from_float(freq)
     self.message_port_pub(pmt.intern("freq"),p)
+    
+  def sendState(self,state):
+    meta = {}  
+    
+    if (state):    
+      meta['state'] = 1
+    else:
+      meta['state'] = 0
+      
+    self.message_port_pub(pmt.intern("state"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
     

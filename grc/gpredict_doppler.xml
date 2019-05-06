@@ -47,12 +47,12 @@
     <value>True</value>
     <type>bool</type>
     <option>
-      <name>Yes</name>
-      <key>True</key>
-    </option>
-    <option>
       <name>No</name>
       <key>False</key>
+    </option>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
     </option>
   </param>
   
@@ -61,4 +61,17 @@
     <type>message</type>
     <optional>1</optional>
   </source>
+  
+  <source>
+    <name>state</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+<doc>
+This block is an enhanced and modernized block for receiving GQRX-compatible radio commands from external systems such as gpredict.  The system listens on a TCP connection for the appropriate command, and when received sets the specified flowgraph variable to the received value.  The frequency is also output on a message block that is compatible with other blocks such as the USRP source freq message input.  
+
+If the radio sends AOS (Acquisition of Signal) and LOS (Loss of Signal) messages (format is just "AOS\n" or "LOS\n"), the state message port will output a 1 (AOS) or a 0 (LOS) compatible with other state processing blocks in modules such as gr-filerepeater.
+
+NOTE: The variable provided to receive the frequency CANNOT be tied to a GUI control or QT will throw an exception.  It must be a variable.  So you have 2 options to control frequency to a radio here, 1. set the variable to "freq" for this block and use that to control the radio source, or for blocks such as USRP source use the message out to tie it to the freq in of another block.
+</doc>
 </block>
