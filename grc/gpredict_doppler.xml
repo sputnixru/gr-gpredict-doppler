@@ -44,7 +44,7 @@
   <param>
     <name>Verbose</name>
     <key>verbose</key>
-    <value>True</value>
+    <value>False</value>
     <type>bool</type>
     <option>
       <name>No</name>
