@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<block>
+  <name>GPredict Rotor</name>
+  <key>gpredict_rotor</key>
+  <category>[GPredict]</category>
+  <import>import gpredict</import>
+  <make>gpredict.rotor($minEl, "$gpredict_host()", $gpredict_port(), $verbose())</make>
+
+  <param>
+    <name>Min Elevation</name>
+    <key>minEl</key>
+    <value>20.0</value>
+    <type>float</type>
+  </param>
+  
+  <param>
+    <name>Gpredict Host</name>
+    <key>gpredict_host</key>
+    <value>localhost</value>
+    <type>string</type>
+  </param>
+  <param>
+    <name>Gpredict Port</name>
+    <key>gpredict_port</key>
+    <value>4533</value>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Verbose</name>
+    <key>verbose</key>
+    <value>True</value>
+    <type>bool</type>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>False</key>
+    </option>
+  </param>
+  <source>
+    <name>az</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>el</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>state</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

@@ -5,6 +5,6 @@ if(NOT PYTHONINTERP_FOUND)
 endif()
 
 GR_PYTHON_INSTALL(
-  FILES __init__.py doppler.py
+  FILES __init__.py doppler.py rotor.py
   DESTINATION ${GR_PYTHON_DIR}/gpredict
 )

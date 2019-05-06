@@ -18,17 +18,17 @@ from gnuradio import gr
 import threading
 import time
 import socket
-
+import pmt
 
 class doppler_runner(threading.Thread):
-  def __init__(self, callback, gpredict_host, gpredict_port, verbose):
+  def __init__(self, bc, callback, gpredict_host, gpredict_port, verbose):
     threading.Thread.__init__(self)
 
     self.callback = callback
     self.gpredict_host = gpredict_host
     self.gpredict_port = gpredict_port
     self.verbose = verbose
-
+    self.blockclass = bc
 
   def run(self):
     bind_to = (self.gpredict_host, self.gpredict_port)
@@ -41,7 +41,7 @@ class doppler_runner(threading.Thread):
     while True:
       if self.verbose: print "Waiting for connection on: %s:%d" % bind_to
       sock, addr = server.accept()
-      if self.verbose: print "Connected from: %s:%d" % (addr[0], addr[1])
+      if self.verbose: print "[doppler] Connected from: %s:%d" % (addr[0], addr[1])
 
       cur_freq = 0
       while True:
@@ -54,6 +54,7 @@ class doppler_runner(threading.Thread):
           if cur_freq != freq:
             if self.verbose: print "New frequency: %d" % freq
             self.callback(freq)
+            self.blockclass.sendFreq(freq)
             cur_freq = freq
           sock.sendall("RPRT 0\n")
         elif data.startswith('f'):
@@ -65,8 +66,14 @@ class doppler_runner(threading.Thread):
 
 class doppler(gr.sync_block):
   def __init__(self, callback, gpredict_host, gpredict_port, verbose):
-    gr.sync_block.__init__(self,
-                           name = "Gpredict Doppler",
-                           in_sig = None,
-                           out_sig = None)
-    doppler_runner(callback, gpredict_host, gpredict_port, verbose).start()
+    gr.sync_block.__init__(self, name = "GPredict Doppler", in_sig = None, out_sig = None)
+    
+    # Init block variables
+    doppler_runner(self, callback, gpredict_host, gpredict_port, verbose).start()
+    self.message_port_register_out(pmt.intern("freq"))
+
+  def sendFreq(self,freq):
+    meta = {}      
+    meta['freq'] = freq
+    self.message_port_pub(pmt.intern("freq"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
+    
