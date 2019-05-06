@@ -49,16 +49,17 @@ class rotor_runner(threading.Thread):
           az=float(rotctl[1])
           el=float(rotctl[2])
           
+          if (cur_az != az) or (cur_el != el):
+            self.blockclass.sendAzEl(az,el)
+            
           if cur_az != az:
             if self.verbose: print "New Azimuth: %f" % az
-            self.blockclass.sendAz(az)
             cur_az = az
             
           if cur_el != el:
             if self.verbose: print "New Elevation: %f" % az
-            self.blockclass.sendEl(el)
             
-            # deal with state
+            # deal with state based on elevation
             if (not curState) and el >= self.minEl:
               curState = True
               self.blockclass.sendState(curState)
@@ -83,20 +84,15 @@ class rotor(gr.sync_block):
     
     rotor_runner(self, minEl, gpredict_host, gpredict_port, verbose).start()
     
-    self.message_port_register_out(pmt.intern("az"))
-    self.message_port_register_out(pmt.intern("el"))
+    self.message_port_register_out(pmt.intern("az_el"))
     self.message_port_register_out(pmt.intern("state"))
 
-  def sendAz(self,az):
+  def sendAzEl(self,az,el):
     meta = {}      
     meta['az'] = az
-    self.message_port_pub(pmt.intern("az"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
-
-  def sendEl(self,el):
-    meta = {}      
     meta['el'] = el
-    self.message_port_pub(pmt.intern("el"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
-        
+    self.message_port_pub(pmt.intern("az_el"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
+
   def sendState(self,state):
     meta = {}  
     

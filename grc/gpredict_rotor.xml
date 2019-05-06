@@ -41,12 +41,7 @@
     </option>
   </param>
   <source>
-    <name>az</name>
-    <type>message</type>
-    <optional>1</optional>
-  </source>
-  <source>
-    <name>el</name>
+    <name>az_el</name>
     <type>message</type>
     <optional>1</optional>
   </source>
