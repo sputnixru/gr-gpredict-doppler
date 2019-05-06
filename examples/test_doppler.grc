@@ -358,16 +358,16 @@
       <value>0</value>
     </param>
     <param>
-      <key>gpredict_host</key>
-      <value>localhost</value>
+      <key>id</key>
+      <value>gpredict_doppler_0</value>
     </param>
     <param>
       <key>gpredict_port</key>
       <value>7356</value>
     </param>
     <param>
-      <key>id</key>
-      <value>gpredict_doppler_0</value>
+      <key>gpredict_host</key>
+      <value>localhost</value>
     </param>
     <param>
       <key>maxoutbuf</key>

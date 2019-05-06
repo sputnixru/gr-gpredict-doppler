@@ -31,9 +31,9 @@ class rotor_runner(threading.Thread):
     curState = False
 	
     while True:
-      if self.verbose: print "Waiting for connection on: %s:%d" % bind_to
+      print "[rotor] Waiting for connection on: %s:%d" % bind_to
       sock, addr = server.accept()
-      if self.verbose: print "[rotor] Connected from: %s:%d" % (addr[0], addr[1])
+      print "[rotor] Connected from: %s:%d" % (addr[0], addr[1])
 
       cur_az = -9999.0
       cur_el = -9999.0
@@ -43,39 +43,44 @@ class rotor_runner(threading.Thread):
         if not data:
           break
 
-        if data.startswith('P'):
-          # if self.verbose: print "Incoming rotor command: %s" % data
-          rotctl=data.split()
-          az=float(rotctl[1])
-          el=float(rotctl[2])
+        # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
+        data = data.rstrip('\n') # Prevent extra '' in array
+        commands = data.split('\n')
+        
+        for curCommand in commands:
+          if curCommand.startswith('P'):
+            # if self.verbose: print "[rotor] Incoming rotor command: %s" % data
+            rotctl=curCommand.split()
+            az=float(rotctl[1])
+            el=float(rotctl[2])
           
-          if (cur_az != az) or (cur_el != el):
-            self.blockclass.sendAzEl(az,el)
+            if (cur_az != az) or (cur_el != el):
+              self.blockclass.sendAzEl(az,el)
             
-          if cur_az != az:
-            if self.verbose: print "New Azimuth: %f" % az
-            cur_az = az
+            if cur_az != az:
+              if self.verbose: print "[rotor] New Azimuth: %f" % az
+              cur_az = az
             
-          if cur_el != el:
-            if self.verbose: print "New Elevation: %f" % az
+            if cur_el != el:
+              if self.verbose: print "[rotor] New Elevation: %f" % az
             
-            # deal with state based on elevation
-            if (not curState) and el >= self.minEl:
-              curState = True
-              self.blockclass.sendState(curState)
-            elif (curState and el < self.minEl):
-              curState = False
-              self.blockclass.sendState(curState)
+              # deal with state based on elevation
+              if (not curState) and el >= self.minEl:
+                curState = True
+                self.blockclass.sendState(curState)
+              elif (curState and el < self.minEl):
+                curState = False
+                self.blockclass.sendState(curState)
               
-            cur_el = el
+              cur_el = el
 
-          # Send report OK response
-          sock.sendall("RPRT 0\n")
-        elif data.startswith('p'):
-          sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
+            # Send report OK response
+            sock.sendall("RPRT 0\n")
+          elif curCommand.startswith('p'):
+            sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
 
       sock.close()
-      if self.verbose: print "Disconnected from: %s:%d" % (addr[0], addr[1])
+      if self.verbose: print "[rotor] Disconnected from: %s:%d" % (addr[0], addr[1])
 
 
 class rotor(gr.sync_block):

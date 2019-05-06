@@ -13,14 +13,22 @@
     <type>float</type>
   </param>
   
+	<param>
+		<name>Local Listening IP</name>
+		<key>gpredict_host</key>
+		<type>enum</type>
+		<option>
+			<name>Localhost</name>
+			<key>localhost</key>
+		</option>
+		<option>
+			<name>All IPs</name>
+			<key>0.0.0.0</key>
+		</option>
+	</param>
+
   <param>
-    <name>Gpredict Host</name>
-    <key>gpredict_host</key>
-    <value>localhost</value>
-    <type>string</type>
-  </param>
-  <param>
-    <name>Gpredict Port</name>
+    <name>Listening Port</name>
     <key>gpredict_port</key>
     <value>4533</value>
     <type>int</type>

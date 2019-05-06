@@ -39,9 +39,9 @@ class doppler_runner(threading.Thread):
     time.sleep(0.5) # TODO: Find better way to know if init is all done
 
     while True:
-      if self.verbose: print "Waiting for connection on: %s:%d" % bind_to
+      print "[doppler] Waiting for connection on: %s:%d" % bind_to
       sock, addr = server.accept()
-      if self.verbose: print "[doppler] Connected from: %s:%d" % (addr[0], addr[1])
+      print "[doppler] Connected from: %s:%d" % (addr[0], addr[1])
 
       cur_freq = 0
       while True:
@@ -49,27 +49,45 @@ class doppler_runner(threading.Thread):
         if not data:
           break
 
-        if data.startswith('F'):
-          freq = int(data[1:].strip())
-          if cur_freq != freq:
-            if self.verbose: print "New frequency: %d" % freq
-            self.callback(freq)
-            self.blockclass.sendFreq(freq)
-            cur_freq = freq
-          sock.sendall("RPRT 0\n")
-        elif data.startswith('f'):
-          sock.sendall("f: %d\n" % cur_freq)
-        elif data.startswith('AOS'):
-          # Received Acquisition of signal.  Send state up
-          self.blockclass.sendState(True)
-        elif data.startswith('LOS'):
-          # Received loss of signal.  Send state down
-          self.blockclass.sendState(False)
-        else:
-          print "[doppler] received unknown command: %s" % data
+        # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
+        data = data.rstrip('\n') # Prevent extra '' in array
+        commands = data.split('\n')
+        
+        for curCommand in commands:
+          foundCommand = False
+        
+          if curCommand.startswith('F'):
+            freq = int(curCommand[1:].strip())
+            if cur_freq != freq:
+              if self.verbose: print "[doppler] New frequency: %d" % freq
+              self.callback(freq)
+              self.blockclass.sendFreq(freq)
+              cur_freq = freq
+              
+            sock.sendall("RPRT 0\n")
+            foundCommand = True
+          elif curCommand.startswith('f'):
+            sock.sendall("f: %d\n" % cur_freq)
+            foundCommand = True
+          elif curCommand == 'q':
+            # Radio sent a q on quit/disconnect.
+            foundCommand = True
+        
+          if curCommand.startswith('AOS'):
+            # Received Acquisition of signal.  Send state up
+            if self.verbose: print "[doppler] received AOS"
+            sock.sendall("RPRT 0\n")
+            self.blockclass.sendState(True)
+          elif curCommand.startswith('LOS'):
+            # Received loss of signal.  Send state down
+            if self.verbose: print "[doppler] received LOS"
+            sock.sendall("RPRT 0\n")
+            self.blockclass.sendState(False)
+          elif not foundCommand:
+            print "[doppler] received unknown command: %s" % curCommand
 
       sock.close()
-      if self.verbose: print "Disconnected from: %s:%d" % (addr[0], addr[1])
+      if self.verbose: print "[doppler] Disconnected from: %s:%d" % (addr[0], addr[1])
 
 
 class doppler(gr.sync_block):
