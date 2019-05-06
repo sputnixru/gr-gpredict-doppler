@@ -24,7 +24,7 @@
   <param>
     <name>Variable</name>
     <key>target</key>
-    <value>freq</value>
+    <value>doppler_freq</value>
     <type>string</type>
   </param>
 

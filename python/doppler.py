@@ -73,7 +73,6 @@ class doppler(gr.sync_block):
     self.message_port_register_out(pmt.intern("freq"))
 
   def sendFreq(self,freq):
-    meta = {}      
-    meta['freq'] = freq
-    self.message_port_pub(pmt.intern("freq"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
+    p = pmt.from_float(freq)
+    self.message_port_pub(pmt.intern("freq"),p)
     
