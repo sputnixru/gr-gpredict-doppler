@@ -7,13 +7,6 @@
   <make>gpredict.rotor($minEl, "$gpredict_host()", $gpredict_port(), $verbose())</make>
 
   <param>
-    <name>Min Elevation</name>
-    <key>minEl</key>
-    <value>20.0</value>
-    <type>float</type>
-  </param>
-  
-	<param>
 		<name>Local Listening IP</name>
 		<key>gpredict_host</key>
 		<type>enum</type>
@@ -25,7 +18,7 @@
 			<name>All IPs</name>
 			<key>0.0.0.0</key>
 		</option>
-	</param>
+  </param>
 
   <param>
     <name>Listening Port</name>
@@ -33,6 +26,14 @@
     <value>4533</value>
     <type>int</type>
   </param>
+  
+  <param>
+    <name>Min Elevation</name>
+    <key>minEl</key>
+    <value>20.0</value>
+    <type>float</type>
+  </param>
+  
   <param>
     <name>Verbose</name>
     <key>verbose</key>
@@ -47,6 +48,7 @@
       <key>False</key>
     </option>
   </param>
+
   <source>
     <name>az_el</name>
     <type>message</type>
