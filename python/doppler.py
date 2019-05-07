@@ -15,6 +15,7 @@
    limitations under the License.
 '''
 from gnuradio import gr
+import sys
 import threading
 import time
 import socket
@@ -30,6 +31,10 @@ class doppler_runner(threading.Thread):
     self.verbose = verbose
     self.blockclass = bc
 
+    self.stopThread = False
+    self.clientConnected = False
+    self.sock = None
+
   def run(self):
     try:
       bind_to = (self.gpredict_host, self.gpredict_port)
@@ -42,15 +47,21 @@ class doppler_runner(threading.Thread):
 
     time.sleep(0.5) # TODO: Find better way to know if init is all done
 
-    while True:
+    while not self.stopThread:
       print "[doppler] Waiting for connection on: %s:%d" % bind_to
-      sock, addr = server.accept()
+      self.clientConnected = False
+      self.sock, addr = server.accept()
+      self.clientConnected = True
       print "[doppler] Connected from: %s:%d" % (addr[0], addr[1])
 
       cur_freq = 0
-      while True:
-        data = sock.recv(1024)
-        if not data:
+      while not self.stopThread:
+        try:
+          data = self.sock.recv(1024)
+        except:
+          data = None
+          
+        if not data or self.stopThread:
           break
 
         # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
@@ -68,10 +79,10 @@ class doppler_runner(threading.Thread):
               self.blockclass.sendFreq(freq)
               cur_freq = freq
               
-            sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n")
             foundCommand = True
           elif curCommand.startswith('f'):
-            sock.sendall("f: %d\n" % cur_freq)
+            self.sock.sendall("f: %d\n" % cur_freq)
             foundCommand = True
           elif curCommand == 'q':
             # Radio sent a q on quit/disconnect.
@@ -80,17 +91,19 @@ class doppler_runner(threading.Thread):
           if curCommand.startswith('AOS'):
             # Received Acquisition of signal.  Send state up
             if self.verbose: print "[doppler] received AOS"
-            sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n")
             self.blockclass.sendState(True)
           elif curCommand.startswith('LOS'):
             # Received loss of signal.  Send state down
             if self.verbose: print "[doppler] received LOS"
-            sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n")
             self.blockclass.sendState(False)
           elif not foundCommand:
             print "[doppler] received unknown command: %s" % curCommand
 
-      sock.close()
+      self.sock.close()
+      self.clientConnected = False
+      self.sock = None
       if self.verbose: print "[doppler] Disconnected from: %s:%d" % (addr[0], addr[1])
 
 
@@ -99,10 +112,29 @@ class doppler(gr.sync_block):
     gr.sync_block.__init__(self, name = "GPredict Doppler", in_sig = None, out_sig = None)
     
     # Init block variables
-    doppler_runner(self, callback, gpredict_host, gpredict_port, verbose).start()
+    self.port = gpredict_port
+    self.thread = doppler_runner(self, callback, gpredict_host, gpredict_port, verbose)
+    self.thread.start()
     self.message_port_register_out(pmt.intern("freq"))
     self.message_port_register_out(pmt.intern("state"))
 
+  def stop(self):
+    self.thread.stopThread = True
+    
+    if self.thread.clientConnected:
+      self.thread.sock.close()
+    else:
+      # Have to force a connection to unblock the accept
+      try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(("localhost",self.port))
+        time.sleep(0.1)
+        s.close()
+      except:
+        pass
+              
+    return True
+    
   def sendFreq(self,freq):
     p = pmt.from_float(freq)
     self.message_port_pub(pmt.intern("freq"),p)

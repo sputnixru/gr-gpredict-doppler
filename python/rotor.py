@@ -4,6 +4,7 @@
 # 
 
 from gnuradio import gr
+import sys
 import threading
 import time
 import socket
@@ -20,7 +21,11 @@ class rotor_runner(threading.Thread):
 
     self.blockclass = blockclass
     self.minEl = minEl
-
+    
+    self.stopThread = False
+    self.clientConnected = False
+    self.sock = None
+    
   def run(self):
     try:
       bind_to = (self.gpredict_host, self.gpredict_port)
@@ -34,17 +39,23 @@ class rotor_runner(threading.Thread):
     time.sleep(0.5) # TODO: Find better way to know if init is all done
     curState = False
 	
-    while True:
+    while not self.stopThread:
       print "[rotor] Waiting for connection on: %s:%d" % bind_to
-      sock, addr = server.accept()
+      self.clientConnected = False
+      self.sock, addr = server.accept()
+      self.clientConnected = True
       print "[rotor] Connected from: %s:%d" % (addr[0], addr[1])
 
       cur_az = -9999.0
       cur_el = -9999.0
       
-      while True:
-        data = sock.recv(1024)
-        if not data:
+      while not self.stopThread:
+        try:
+          data = self.sock.recv(1024)
+        except:
+          data = None
+          
+        if not data or self.stopThread:
           break
 
         # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
@@ -79,21 +90,23 @@ class rotor_runner(threading.Thread):
               cur_el = el
 
             # Send report OK response
-            sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n")
           elif curCommand.startswith('p'):
-            sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
+            self.sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
           elif curCommand == 'S':
             # Seen with disconnect Disconnect
             # Send report OK response
-            sock.sendall("RPRT 0\n")   
+            self.sock.sendall("RPRT 0\n")   
           elif curCommand == 'q':
             # Disconnect
             # Send report OK response
-            sock.sendall("RPRT 0\n")   
+            self.sock.sendall("RPRT 0\n")   
           else:
             print "[rotor] Unknown command: %s" % curCommand
 
-      sock.close()
+      self.sock.close()
+      self.clientConnected = False
+      self.sock = None
       if self.verbose: print "[rotor] Disconnected from: %s:%d" % (addr[0], addr[1])
 
 
@@ -101,11 +114,30 @@ class rotor(gr.sync_block):
   def __init__(self, minEl, gpredict_host, gpredict_port, verbose):
     gr.sync_block.__init__(self, name = "GPredict Rotor", in_sig = None, out_sig = None)
     
-    rotor_runner(self, minEl, gpredict_host, gpredict_port, verbose).start()
+    self.port = gpredict_port
+    self.thread = rotor_runner(self, minEl, gpredict_host, gpredict_port, verbose)
+    self.thread.start()
     
     self.message_port_register_out(pmt.intern("az_el"))
     self.message_port_register_out(pmt.intern("state"))
 
+  def stop(self):
+    self.thread.stopThread = True
+    if self.thread.clientConnected:
+      self.thread.sock.close()
+    else:
+      # Have to force a connection to unblock the accept
+      try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(("localhost",self.port))
+        time.sleep(0.1)
+        s.close()
+      except:
+        pass
+      
+    return True
+    
+	     
   def sendAzEl(self,az,el):
     meta = {}      
     meta['az'] = az
