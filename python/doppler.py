@@ -31,10 +31,14 @@ class doppler_runner(threading.Thread):
     self.blockclass = bc
 
   def run(self):
-    bind_to = (self.gpredict_host, self.gpredict_port)
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(bind_to)
-    server.listen(0)
+    try:
+      bind_to = (self.gpredict_host, self.gpredict_port)
+      server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      server.bind(bind_to)
+      server.listen(0)
+    except Exception as e:
+      print "[doppler] Error starting listener: %s" % str(e)
+      sys.exit(1)
 
     time.sleep(0.5) # TODO: Find better way to know if init is all done
 

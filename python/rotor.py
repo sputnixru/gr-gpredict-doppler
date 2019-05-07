@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # 
-# Adapted from Nagle's doppler.py
+# Adapted from Nagle's doppler.py to fit rotor
 # 
 
 from gnuradio import gr
@@ -22,11 +22,15 @@ class rotor_runner(threading.Thread):
     self.minEl = minEl
 
   def run(self):
-    bind_to = (self.gpredict_host, self.gpredict_port)
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(bind_to)
-    server.listen(0)
-
+    try:
+      bind_to = (self.gpredict_host, self.gpredict_port)
+      server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      server.bind(bind_to)
+      server.listen(0)
+    except Exception as e:
+      print "[rotor] Error starting listener: %s" % str(e)
+      sys.exit(1)
+          
     time.sleep(0.5) # TODO: Find better way to know if init is all done
     curState = False
 	
@@ -78,6 +82,16 @@ class rotor_runner(threading.Thread):
             sock.sendall("RPRT 0\n")
           elif curCommand.startswith('p'):
             sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
+          elif curCommand == 'S':
+            # Seen with disconnect Disconnect
+            # Send report OK response
+            sock.sendall("RPRT 0\n")   
+          elif curCommand == 'q':
+            # Disconnect
+            # Send report OK response
+            sock.sendall("RPRT 0\n")   
+          else:
+            print "[rotor] Unknown command: %s" % curCommand
 
       sock.close()
       if self.verbose: print "[rotor] Disconnected from: %s:%d" % (addr[0], addr[1])
