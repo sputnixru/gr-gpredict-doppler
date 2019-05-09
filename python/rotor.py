@@ -90,19 +90,36 @@ class rotor_runner(threading.Thread):
               cur_el = el
 
             # Send report OK response
-            self.sock.sendall("RPRT 0\n")
+            try:
+              self.sock.sendall("RPRT 0\n")
+            except:
+              pass
           elif curCommand.startswith('p'):
-            self.sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
+            try:
+              self.sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
+            except:
+              pass
           elif curCommand == 'S':
             # Seen with disconnect Disconnect
             # Send report OK response
-            self.sock.sendall("RPRT 0\n")   
+            try:
+              self.sock.sendall("RPRT 0\n")
+            except:
+              pass   
           elif curCommand == 'q':
             # Disconnect
             # Send report OK response
-            self.sock.sendall("RPRT 0\n")   
+            try:
+              self.sock.sendall("RPRT 0\n")
+            except:
+              pass   
           else:
             print "[rotor] Unknown command: %s" % curCommand
+            # Send report OK response
+            try:
+              self.sock.sendall("RPRT 0\n")
+            except:
+              pass   
 
       self.sock.close()
       self.clientConnected = False
