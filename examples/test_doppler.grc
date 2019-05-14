@@ -401,6 +401,12 @@
   <connection>
     <source_block_id>gpredict_doppler_0</source_block_id>
     <sink_block_id>blocks_message_debug_0</sink_block_id>
+    <source_key>freq</source_key>
+    <sink_key>print</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>gpredict_doppler_0</source_block_id>
+    <sink_block_id>blocks_message_debug_0</sink_block_id>
     <source_key>state</source_key>
     <sink_key>print</sink_key>
   </connection>
