@@ -198,7 +198,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 160)</value>
+      <value>(1120, 120)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -245,7 +245,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(376, 144)</value>
+      <value>(744, 104)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -296,7 +296,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(576, 152)</value>
+      <value>(944, 116)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -332,6 +332,41 @@
     </param>
   </block>
   <block>
+    <key>gpredict_MsgPairToVar</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(536, 520)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>gpredict_MsgPairToVar_0</value>
+    </param>
+    <param>
+      <key>target</key>
+      <value>freq</value>
+    </param>
+  </block>
+  <block>
     <key>gpredict_doppler</key>
     <param>
       <key>alias</key>
@@ -351,7 +386,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(376, 296)</value>
+      <value>(328, 344)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -410,7 +445,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -501,11 +536,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(840, 256)</value>
+      <value>(952, 228)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>1,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -772,9 +807,9 @@
   </connection>
   <connection>
     <source_block_id>gpredict_doppler_0</source_block_id>
-    <sink_block_id>blocks_message_debug_0</sink_block_id>
+    <sink_block_id>gpredict_MsgPairToVar_0</sink_block_id>
     <source_key>freq</source_key>
-    <sink_key>print</sink_key>
+    <sink_key>inpair</sink_key>
   </connection>
   <connection>
     <source_block_id>gpredict_doppler_0</source_block_id>

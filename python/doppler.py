@@ -22,10 +22,9 @@ import socket
 import pmt
 
 class doppler_runner(threading.Thread):
-  def __init__(self, bc, callback, gpredict_host, gpredict_port, verbose):
+  def __init__(self, bc, gpredict_host, gpredict_port, verbose):
     threading.Thread.__init__(self)
 
-    self.callback = callback
     self.gpredict_host = gpredict_host
     self.gpredict_port = gpredict_port
     self.verbose = verbose
@@ -76,10 +75,6 @@ class doppler_runner(threading.Thread):
             if cur_freq != freq:
               if self.verbose: print "[doppler] New frequency: %d" % freq
               
-              # Allow for None callbacks
-              if self.callback:
-              	self.callback(freq)
-              	
               self.blockclass.sendFreq(freq)
               cur_freq = freq
               
@@ -112,12 +107,12 @@ class doppler_runner(threading.Thread):
 
 
 class doppler(gr.sync_block):
-  def __init__(self, callback, gpredict_host, gpredict_port, verbose):
+  def __init__(self, gpredict_host, gpredict_port, verbose):
     gr.sync_block.__init__(self, name = "GPredict Doppler", in_sig = None, out_sig = None)
     
     # Init block variables
     self.port = gpredict_port
-    self.thread = doppler_runner(self, callback, gpredict_host, gpredict_port, verbose)
+    self.thread = doppler_runner(self, gpredict_host, gpredict_port, verbose)
     self.thread.start()
     self.message_port_register_out(pmt.intern("freq"))
     self.message_port_register_out(pmt.intern("state"))

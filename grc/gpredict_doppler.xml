@@ -19,14 +19,8 @@
   <key>gpredict_doppler</key>
   <category>[GPredict]</category>
   <import>import gpredict</import>
-  <make>gpredict.doppler(self.set_$target(),"$gpredict_host()", $gpredict_port(), $verbose())</make>
-
-  <param>
-    <name>Variable</name>
-    <key>target</key>
-    <value>doppler_freq</value>
-    <type>string</type>
-  </param>
+  <make>gpredict.doppler("$gpredict_host()", $gpredict_port(), $verbose())</make>
+  
 	<param>
 		<name>Local Listening IP</name>
 		<key>gpredict_host</key>
@@ -75,11 +69,9 @@
     <optional>1</optional>
   </source>
 <doc>
-This block is an enhanced and modernized block for receiving GQRX-compatible radio commands from external systems such as gpredict.  The system listens on a TCP connection for the appropriate command, and when received sets the specified flowgraph variable to the received value.  The frequency is also output on a message block that is compatible with other blocks such as the USRP source freq message input.  
+This block is an enhanced and modernized block for receiving GQRX-compatible radio commands from external systems such as gpredict.  The system listens on a TCP connection for the appropriate command, and when received the frequency is output on a message block that is compatible with other blocks such as the USRP source freq message input.  This output can also be used to set a flowgraph variable by feeding it to the "Message Pair to Var" block.
 
 If the radio sends AOS (Acquisition of Signal) and LOS (Loss of Signal) messages (format is just "AOS\n" or "LOS\n"), the state message port will output a 1 (AOS) or a 0 (LOS) compatible with other state processing blocks in modules such as gr-filerepeater.
-
-NOTE: The variable provided to receive the frequency CANNOT be tied to a GUI control or QT will throw an exception.  It must be a variable.  So you have 2 options to control frequency to a radio here, 1. set the variable to "freq" for this block and use that to control the radio source, or for blocks such as USRP source use the message out to tie it to the freq in of another block.
 
 Also, for security, if you are using gpredict local, the gpredict listening IP can be set to localhost.
 </doc>
