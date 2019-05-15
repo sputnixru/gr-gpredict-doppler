@@ -75,7 +75,11 @@ class doppler_runner(threading.Thread):
             freq = int(curCommand[1:].strip())
             if cur_freq != freq:
               if self.verbose: print "[doppler] New frequency: %d" % freq
-              self.callback(freq)
+              
+              # Allow for None callbacks
+              if self.callback:
+              	self.callback(freq)
+              	
               self.blockclass.sendFreq(freq)
               cur_freq = freq
               
@@ -137,7 +141,7 @@ class doppler(gr.sync_block):
     
   def sendFreq(self,freq):
     p = pmt.from_float(freq)
-    self.message_port_pub(pmt.intern("freq"),p)
+    self.message_port_pub(pmt.intern("freq"),pmt.cons(pmt.intern("freq"),p))
     
   def sendState(self,state):
     meta = {}  

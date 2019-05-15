@@ -19,7 +19,7 @@
   <key>gpredict_doppler</key>
   <category>[GPredict]</category>
   <import>import gpredict</import>
-  <make>gpredict.doppler(self.set_$target(), "$gpredict_host()", $gpredict_port(), $verbose())</make>
+  <make>gpredict.doppler(self.set_$target(),"$gpredict_host()", $gpredict_port(), $verbose())</make>
 
   <param>
     <name>Variable</name>
