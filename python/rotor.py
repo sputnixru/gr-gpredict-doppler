@@ -29,9 +29,10 @@ class rotor_runner(threading.Thread):
   def run(self):
     try:
       bind_to = (self.gpredict_host, self.gpredict_port)
-      server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      server.bind(bind_to)
-      server.listen(0)
+      self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+      self.server.bind(bind_to)
+      self.server.listen(0)
     except Exception as e:
       print "[rotor] Error starting listener: %s" % str(e)
       sys.exit(1)
@@ -42,7 +43,7 @@ class rotor_runner(threading.Thread):
     while not self.stopThread:
       print "[rotor] Waiting for connection on: %s:%d" % bind_to
       self.clientConnected = False
-      self.sock, addr = server.accept()
+      self.sock, addr = self.server.accept()
       self.clientConnected = True
       print "[rotor] Connected from: %s:%d" % (addr[0], addr[1])
 
@@ -126,6 +127,10 @@ class rotor_runner(threading.Thread):
       self.sock = None
       if self.verbose: print "[rotor] Disconnected from: %s:%d" % (addr[0], addr[1])
 
+    # print "[rotor] Shutting down server."
+    self.server.shutdown(socket.SHUT_RDWR)
+    self.server.close()
+    self.server = None
 
 class rotor(gr.sync_block):
   def __init__(self, minEl, gpredict_host, gpredict_port, verbose):
@@ -148,10 +153,13 @@ class rotor(gr.sync_block):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(("localhost",self.port))
         time.sleep(0.1)
+        self.sock.shutdown(socket.SHUT_RDWR)
         s.close()
       except:
         pass
       
+    self.thread.join()
+        
     return True
     
 	     
