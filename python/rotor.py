@@ -78,7 +78,7 @@ class rotor_runner(threading.Thread):
               cur_az = az
             
             if cur_el != el:
-              if self.verbose: print "[rotor] New Elevation: %f" % az
+              if self.verbose: print "[rotor] New Elevation: %f" % el
             
               # deal with state based on elevation
               if (not curState) and el >= self.minEl:
