@@ -9,14 +9,14 @@
   <param>
     <name>Min Elevation</name>
     <key>el_min</key>
-    <value>10.0</value>
+    <value>20.0</value>
     <type>float</type>
   </param>
 
   <param>
     <name>Max Elevation</name>
     <key>el_max</key>
-    <value>60.0</value>
+    <value>90.0</value>
     <type>float</type>
   </param>
 
