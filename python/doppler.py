@@ -149,12 +149,10 @@ class doppler(gr.sync_block):
     self.message_port_pub(pmt.intern("freq"),pmt.cons(pmt.intern("freq"),p))
     
   def sendState(self,state):
-    meta = {}  
-    
     if (state):    
-      meta['state'] = 1
+      newState = 1
     else:
-      meta['state'] = 0
+      newState = 0
       
-    self.message_port_pub(pmt.intern("state"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
+    self.message_port_pub(pmt.intern("state"),pmt.cons( pmt.intern("state"), pmt.from_long(newState) ))
     
