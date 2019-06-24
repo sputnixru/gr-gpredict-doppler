@@ -22,7 +22,7 @@
   <param>
     <name>Listening Port</name>
     <key>gpredict_port</key>
-    <value>7356</value>
+    <value>7360</value>
     <type>int</type>
   </param>
 
