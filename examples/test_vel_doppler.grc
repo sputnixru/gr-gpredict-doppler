@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?grc format='1' created='3.7.13'?>
 <flow_graph>
-  <timestamp>Sun May  5 18:04:04 2019</timestamp>
+  <timestamp>Mon Jun 24 14:26:18 2019</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>test_doppler</value>
+      <value>test_vel_doppler</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -101,7 +101,34 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 12)</value>
+      <value>(304, 12)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>doppler_freq</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>145.8e6</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(200, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -144,6 +171,96 @@
     </param>
   </block>
   <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(160, 92)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>velocity</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>17000.0</value>
+    </param>
+  </block>
+  <block>
+    <key>analog_sig_source_x</key>
+    <param>
+      <key>amp</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>freq</key>
+      <value>freq</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(760, 96)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>analog_sig_source_x_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>offset</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>samp_rate</key>
+      <value>samp_rate</value>
+    </param>
+    <param>
+      <key>waveform</key>
+      <value>analog.GR_COS_WAVE</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_message_debug</key>
     <param>
       <key>alias</key>
@@ -163,7 +280,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 376)</value>
+      <value>(704, 392)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -175,108 +292,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_null_sink</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1120, 120)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_null_sink_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_null_source</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(744, 104)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_null_source_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_outputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
     <key>blocks_throttle</key>
     <param>
       <key>alias</key>
@@ -284,7 +299,7 @@
     </param>
     <param>
       <key>comment</key>
-      <value>Just needed for scheduling engine timing</value>
+      <value></value>
     </param>
     <param>
       <key>affinity</key>
@@ -296,7 +311,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(944, 116)</value>
+      <value>(976, 124)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -351,11 +366,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 452)</value>
+      <value>(576, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>180</value>
+      <value>0</value>
     </param>
     <param>
       <key>id</key>
@@ -363,11 +378,11 @@
     </param>
     <param>
       <key>target</key>
-      <value>freq</value>
+      <value>doppler_freq</value>
     </param>
   </block>
   <block>
-    <key>gpredict_doppler</key>
+    <key>gpredict_vel_doppler</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -386,7 +401,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 348)</value>
+      <value>(296, 312)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -394,7 +409,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>gpredict_doppler_0</value>
+      <value>gpredict_vel_doppler_0</value>
+    </param>
+    <param>
+      <key>frequency</key>
+      <value>freq</value>
     </param>
     <param>
       <key>gpredict_port</key>
@@ -411,6 +430,10 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>velocity</key>
+      <value>velocity</value>
     </param>
     <param>
       <key>verbose</key>
@@ -437,7 +460,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(352, 8)</value>
+      <value>(448, 16)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -508,7 +531,7 @@
     </param>
     <param>
       <key>fc</key>
-      <value>0</value>
+      <value>freq</value>
     </param>
     <param>
       <key>comment</key>
@@ -532,7 +555,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(952, 228)</value>
+      <value>(984, 236)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -732,7 +755,7 @@
     </param>
     <param>
       <key>showports</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>freqhalf</key>
@@ -784,45 +807,45 @@
     </param>
   </block>
   <connection>
-    <source_block_id>blocks_null_source_0</source_block_id>
+    <source_block_id>analog_sig_source_x_0</source_block_id>
     <sink_block_id>blocks_throttle_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_throttle_0</source_block_id>
-    <sink_block_id>blocks_null_sink_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_throttle_0</source_block_id>
     <sink_block_id>qtgui_freq_sink_x_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>gpredict_doppler_0</source_block_id>
-    <sink_block_id>gpredict_MsgPairToVar_0</sink_block_id>
-    <source_key>freq</source_key>
-    <sink_key>inpair</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gpredict_doppler_0</source_block_id>
-    <sink_block_id>qtgui_edit_box_msg_0</sink_block_id>
-    <source_key>freq</source_key>
-    <sink_key>val</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gpredict_doppler_0</source_block_id>
-    <sink_block_id>qtgui_freq_sink_x_0</sink_block_id>
-    <source_key>freq</source_key>
+    <source_block_id>gpredict_vel_doppler_0</source_block_id>
+    <sink_block_id>analog_sig_source_x_0</sink_block_id>
+    <source_key>freqshift</source_key>
     <sink_key>freq</sink_key>
   </connection>
   <connection>
-    <source_block_id>gpredict_doppler_0</source_block_id>
+    <source_block_id>gpredict_vel_doppler_0</source_block_id>
     <sink_block_id>blocks_message_debug_0</sink_block_id>
-    <source_key>state</source_key>
+    <source_key>freqshift</source_key>
     <sink_key>print</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>gpredict_vel_doppler_0</source_block_id>
+    <sink_block_id>blocks_message_debug_0</sink_block_id>
+    <source_key>frequency</source_key>
+    <sink_key>print</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>gpredict_vel_doppler_0</source_block_id>
+    <sink_block_id>gpredict_MsgPairToVar_0</sink_block_id>
+    <source_key>frequency</source_key>
+    <sink_key>inpair</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>gpredict_vel_doppler_0</source_block_id>
+    <sink_block_id>qtgui_edit_box_msg_0</sink_block_id>
+    <source_key>frequency</source_key>
+    <sink_key>val</sink_key>
   </connection>
 </flow_graph>

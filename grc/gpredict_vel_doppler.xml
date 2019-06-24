@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<block>
+  <name>Velocity-Based Doppler</name>
+  <key>gpredict_vel_doppler</key>
+  <category>[GPredict]</category>
+  <import>import gpredict</import>
+  <make>gpredict.vel_doppler($frequency,$velocity,"$gpredict_host()", $gpredict_port(), $verbose())</make>
+	<param>
+		<name>Local Listening IP</name>
+		<key>gpredict_host</key>
+		<type>enum</type>
+		<option>
+			<name>Localhost</name>
+			<key>localhost</key>
+		</option>
+		<option>
+			<name>All IPs</name>
+			<key>0.0.0.0</key>
+		</option>
+	</param>
+
+  <param>
+    <name>Listening Port</name>
+    <key>gpredict_port</key>
+    <value>7356</value>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Known Frequency</name>
+    <key>frequency</key>
+    <value>freq</value>
+    <type>float</type>
+  </param>
+  
+  <param>
+    <name>Velocity (m/s)</name>
+    <key>velocity</key>
+    <value>velocity</value>
+    <type>float</type>
+  </param>
+  
+  <param>
+    <name>Verbose</name>
+    <key>verbose</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+      <name>No</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>Yes</name>
+      <key>True</key>
+    </option>
+  </param>
+  
+  <sink>
+    <name>velocity</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+  
+  <source>
+    <name>frequency</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  
+  <source>
+    <name>freqshift</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+<doc>
+	Given a known frequency and a relative velocity (in m/s), this block will calculate the doppler-shifted frequency and output it in two forms on the message ports.  One output is the full frequency, the other is just the relative shift.  Both are in Hz.
+	
+	Note: The velocity coordinate system is defined as Negative = towards you, Positive = away.
+	
+</doc>
+</block>
