@@ -29,9 +29,10 @@ class rotor_runner(threading.Thread):
   def run(self):
     try:
       bind_to = (self.gpredict_host, self.gpredict_port)
-      server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      server.bind(bind_to)
-      server.listen(0)
+      self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+      self.server.bind(bind_to)
+      self.server.listen(0)
     except Exception as e:
       print("[rotor] Error starting listener: %s" % str(e))
       sys.exit(1)
@@ -42,7 +43,7 @@ class rotor_runner(threading.Thread):
     while not self.stopThread:
       print("[rotor] Waiting for connection on: %s:%d" % bind_to)
       self.clientConnected = False
-      self.sock, addr = server.accept()
+      self.sock, addr = self.server.accept()
       self.clientConnected = True
       print("[rotor] Connected from: %s:%d" % (addr[0], addr[1]))
 
@@ -57,8 +58,6 @@ class rotor_runner(threading.Thread):
           
         if not data or self.stopThread:
           break
-
-        data = data.decode()
 
         # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
         data = data.rstrip('\n') # Prevent extra '' in array
@@ -79,7 +78,7 @@ class rotor_runner(threading.Thread):
               cur_az = az
             
             if cur_el != el:
-              if self.verbose: print("[rotor] New Elevation: %f" % az)
+              if self.verbose: print("[rotor] New Elevation: %f" % el)
             
               # deal with state based on elevation
               if (not curState) and el >= self.minEl:
@@ -93,33 +92,33 @@ class rotor_runner(threading.Thread):
 
             # Send report OK response
             try:
-              self.sock.sendall(b"RPRT 0\n")
+              self.sock.sendall("RPRT 0\n")
             except:
               pass
           elif curCommand.startswith('p'):
             try:
-              self.sock.sendall(b"p: %.1f %.1f\n" % (cur_az,cur_el))
+              self.sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
             except:
               pass
           elif curCommand == 'S':
             # Seen with disconnect Disconnect
             # Send report OK response
             try:
-              self.sock.sendall(b"RPRT 0\n")
+              self.sock.sendall("RPRT 0\n")
             except:
               pass   
           elif curCommand == 'q':
             # Disconnect
             # Send report OK response
             try:
-              self.sock.sendall(b"RPRT 0\n")
+              self.sock.sendall("RPRT 0\n")
             except:
               pass   
           else:
             print("[rotor] Unknown command: %s" % curCommand)
             # Send report OK response
             try:
-              self.sock.sendall(b"RPRT 0\n")
+              self.sock.sendall("RPRT 0\n")
             except:
               pass   
 
@@ -128,6 +127,10 @@ class rotor_runner(threading.Thread):
       self.sock = None
       if self.verbose: print("[rotor] Disconnected from: %s:%d" % (addr[0], addr[1]))
 
+    # print("[rotor] Shutting down server.")
+    self.server.shutdown(socket.SHUT_RDWR)
+    self.server.close()
+    self.server = None
 
 class rotor(gr.sync_block):
   def __init__(self, minEl, gpredict_host, gpredict_port, verbose):
@@ -150,10 +153,13 @@ class rotor(gr.sync_block):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect(("localhost",self.port))
         time.sleep(0.1)
+        self.sock.shutdown(socket.SHUT_RDWR)
         s.close()
       except:
         pass
       
+    self.thread.join()
+        
     return True
     
 	     
@@ -164,11 +170,9 @@ class rotor(gr.sync_block):
     self.message_port_pub(pmt.intern("az_el"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
 
   def sendState(self,state):
-    meta = {}  
-    
     if (state):    
-      meta['state'] = 1
+      newState = 1
     else:
-      meta['state'] = 0
+      newState = 0
       
-    self.message_port_pub(pmt.intern("state"),pmt.cons( pmt.to_pmt(meta), pmt.PMT_NIL ))
+    self.message_port_pub(pmt.intern("state"),pmt.cons( pmt.intern("state"), pmt.from_long(newState) ))

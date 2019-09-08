@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?grc format='1' created='3.7.13'?>
 <flow_graph>
-  <timestamp>Sun May  5 18:04:04 2019</timestamp>
+  <timestamp>Wed May 29 14:18:42 2019</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>test_az_el_limit</value>
+      <value>complex_gpredict_state</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -117,10 +117,30 @@
     </param>
   </block>
   <block>
-    <key>blocks_message_debug</key>
+    <key>filerepeater_AdvFileSink</key>
+    <param>
+      <key>autostartFreqChange</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>basedir</key>
+      <value>/tmp</value>
+    </param>
+    <param>
+      <key>basefile</key>
+      <value>gr_record</value>
+    </param>
+    <param>
+      <key>bits_per_sample</key>
+      <value>8</value>
+    </param>
     <param>
       <key>alias</key>
       <value></value>
+    </param>
+    <param>
+      <key>unbuffered</key>
+      <value>False</value>
     </param>
     <param>
       <key>comment</key>
@@ -135,173 +155,122 @@
       <value>True</value>
     </param>
     <param>
+      <key>radioCenterFreq</key>
+      <value>freq</value>
+    </param>
+    <param>
       <key>_coordinate</key>
-      <value>(672, 376)</value>
+      <value>(912, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
       <value>0</value>
     </param>
     <param>
-      <key>id</key>
-      <value>blocks_message_debug_0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_null_sink</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(752, 160)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
+      <key>honorFreqChange</key>
+      <value>False</value>
     </param>
     <param>
       <key>id</key>
-      <value>blocks_null_sink_0</value>
+      <value>filerepeater_AdvFileSink_0</value>
     </param>
     <param>
       <key>type</key>
       <value>complex</value>
     </param>
     <param>
-      <key>num_inputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_null_source</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(376, 144)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
+      <key>maxSize</key>
       <value>0</value>
     </param>
     <param>
-      <key>id</key>
-      <value>blocks_null_source_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
+      <key>maxTimeSec</key>
       <value>0</value>
     </param>
     <param>
-      <key>minoutbuf</key>
-      <value>0</value>
+      <key>recordOnStart</key>
+      <value>False</value>
     </param>
     <param>
-      <key>num_outputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_throttle</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>Just needed for scheduling engine timing</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(576, 152)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_throttle_0</value>
-    </param>
-    <param>
-      <key>ignoretag</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>samples_per_second</key>
+      <key>sampleRate</key>
       <value>samp_rate</value>
     </param>
     <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
       <key>vlen</key>
       <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>filerepeater_StateAnd</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(672, 296)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>filerepeater_StateAnd_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>gpredict_MsgPairToVar</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(256, 268)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>gpredict_MsgPairToVar_0</value>
+    </param>
+    <param>
+      <key>target</key>
+      <value>freq</value>
     </param>
   </block>
   <block>
@@ -324,7 +293,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 280)</value>
+      <value>(336, 344)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -360,6 +329,57 @@
     </param>
   </block>
   <block>
+    <key>gpredict_doppler</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(256, 164)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>gpredict_doppler_0</value>
+    </param>
+    <param>
+      <key>gpredict_port</key>
+      <value>7356</value>
+    </param>
+    <param>
+      <key>gpredict_host</key>
+      <value>localhost</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>verbose</key>
+      <value>False</value>
+    </param>
+  </block>
+  <block>
     <key>gpredict_rotor</key>
     <param>
       <key>alias</key>
@@ -379,7 +399,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(160, 368)</value>
+      <value>(208, 456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -414,29 +434,102 @@
       <value>False</value>
     </param>
   </block>
+  <block>
+    <key>qtgui_edit_box_msg</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(920, 480)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>qtgui_edit_box_msg_0</value>
+    </param>
+    <param>
+      <key>key</key>
+      <value>state</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>State</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>is_pair</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>is_static</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>int</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+  </block>
   <connection>
-    <source_block_id>blocks_null_source_0</source_block_id>
-    <sink_block_id>blocks_throttle_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
+    <source_block_id>filerepeater_StateAnd_0</source_block_id>
+    <sink_block_id>filerepeater_AdvFileSink_0</sink_block_id>
+    <source_key>state</source_key>
+    <sink_key>recordstate</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_throttle_0</source_block_id>
-    <sink_block_id>blocks_null_sink_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
+    <source_block_id>filerepeater_StateAnd_0</source_block_id>
+    <sink_block_id>qtgui_edit_box_msg_0</sink_block_id>
+    <source_key>state</source_key>
+    <sink_key>val</sink_key>
   </connection>
   <connection>
     <source_block_id>gpredict_azel_limit_0</source_block_id>
-    <sink_block_id>blocks_message_debug_0</sink_block_id>
+    <sink_block_id>filerepeater_StateAnd_0</sink_block_id>
     <source_key>state</source_key>
-    <sink_key>print</sink_key>
+    <sink_key>state2</sink_key>
   </connection>
   <connection>
-    <source_block_id>gpredict_rotor_0</source_block_id>
-    <sink_block_id>blocks_message_debug_0</sink_block_id>
-    <source_key>az_el</source_key>
-    <sink_key>print</sink_key>
+    <source_block_id>gpredict_doppler_0</source_block_id>
+    <sink_block_id>gpredict_MsgPairToVar_0</sink_block_id>
+    <source_key>freq</source_key>
+    <sink_key>inpair</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>gpredict_doppler_0</source_block_id>
+    <sink_block_id>filerepeater_StateAnd_0</sink_block_id>
+    <source_key>state</source_key>
+    <sink_key>state1</sink_key>
   </connection>
   <connection>
     <source_block_id>gpredict_rotor_0</source_block_id>

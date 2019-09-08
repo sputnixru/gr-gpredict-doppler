@@ -70,7 +70,7 @@ class AzElLimit(gr.sync_block):
           self.sendState(False)
     except Exception as e:
       print("[azel_limit] Error with az/el message: %s" % str(e))
-      print(str(meta))
+      print(str(meta))    
       
   def sendState(self,state):
     meta = {}  
