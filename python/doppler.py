@@ -66,7 +66,7 @@ class doppler_runner(threading.Thread):
           break
 
         # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
-        data = data.rstrip('\n') # Prevent extra '' in array
+        data = data.decode('ASCII').rstrip('\n') # Prevent extra '' in array
         commands = data.split('\n')
         
         for curCommand in commands:
@@ -80,10 +80,11 @@ class doppler_runner(threading.Thread):
               self.blockclass.sendFreq(freq)
               cur_freq = freq
               
-            self.sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             foundCommand = True
           elif curCommand.startswith('f'):
-            self.sock.sendall("f: %d\n" % cur_freq)
+            sendMsgStr = "f: %d\n" % cur_freq
+            self.sock.sendall(sendMsgStr.encode("UTF-8"))
             foundCommand = True
           elif curCommand == 'q':
             # Radio sent a q on quit/disconnect.
@@ -92,12 +93,12 @@ class doppler_runner(threading.Thread):
           if curCommand.startswith('AOS'):
             # Received Acquisition of signal.  Send state up
             if self.verbose: print("[doppler] received AOS")
-            self.sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             self.blockclass.sendState(True)
           elif curCommand.startswith('LOS'):
             # Received loss of signal.  Send state down
             if self.verbose: print("[doppler] received LOS")
-            self.sock.sendall("RPRT 0\n")
+            self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             self.blockclass.sendState(False)
           elif not foundCommand:
             print("[doppler] received unknown command: %s" % curCommand)

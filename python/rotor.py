@@ -60,7 +60,7 @@ class rotor_runner(threading.Thread):
           break
 
         # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
-        data = data.rstrip('\n') # Prevent extra '' in array
+        data = data.decode('ASCII').rstrip('\n') # Prevent extra '' in array
         commands = data.split('\n')
         
         for curCommand in commands:
@@ -92,33 +92,34 @@ class rotor_runner(threading.Thread):
 
             # Send report OK response
             try:
-              self.sock.sendall("RPRT 0\n")
+              self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             except:
               pass
           elif curCommand.startswith('p'):
             try:
-              self.sock.sendall("p: %.1f %.1f\n" % (cur_az,cur_el))
+              sendMsgStr = "p: %.1f %.1f\n" % (cur_az,cur_el)
+              self.sock.sendall(sendMsgStr.encode("UTF-8"))
             except:
               pass
           elif curCommand == 'S':
             # Seen with disconnect Disconnect
             # Send report OK response
             try:
-              self.sock.sendall("RPRT 0\n")
+              self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             except:
               pass   
           elif curCommand == 'q':
             # Disconnect
             # Send report OK response
             try:
-              self.sock.sendall("RPRT 0\n")
+              self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             except:
               pass   
           else:
             print("[rotor] Unknown command: %s" % curCommand)
             # Send report OK response
             try:
-              self.sock.sendall("RPRT 0\n")
+              self.sock.sendall("RPRT 0\n".encode("UTF-8"))
             except:
               pass   
 
