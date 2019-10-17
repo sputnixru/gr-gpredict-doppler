@@ -1,0 +1,27 @@
+id: gpredict_VarToMsg
+label: Variable to Message
+category: '[GPredict]'
+
+parameters:
+-   id: target
+    label: Variable
+    default: freq
+-   id: msgname
+    label: Message Variable Name
+    dtype: string
+    default: 'freq'
+
+outputs:
+-   domain: message
+    id: msgout
+
+templates:
+    imports: import gpredict
+    make: gpredict.VarToMsgPair(${msgname})
+    callbacks:
+    - variableChanged(${target})
+  
+documentation: |-
+    This block will monitor a variable, and when it changes, generate a message.
+
+file_format: 1

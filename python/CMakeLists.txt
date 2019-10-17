@@ -10,6 +10,7 @@ GR_PYTHON_INSTALL(
   rotor.py 
   azel_limit.py 
   MsgPairToVar.py
+  vartomsg.py
   vel_doppler.py
   DESTINATION ${GR_PYTHON_DIR}/gpredict
 )
