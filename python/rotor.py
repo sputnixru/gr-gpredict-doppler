@@ -60,6 +60,7 @@ class rotor_runner(threading.Thread):
           break
 
         # Allow for multiple commands to have come in at once.  For instance Frequency and AOS / LOS
+        #print(str(type(data)))
         data = data.decode('ASCII').rstrip('\n') # Prevent extra '' in array
         commands = data.split('\n')
         
