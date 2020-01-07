@@ -36,8 +36,17 @@ set(GR_PKG_LIBEXEC_DIR ${GR_LIBEXEC_DIR}/${CMAKE_PROJECT_NAME})
 set(GRC_BLOCKS_DIR ${GR_PKG_DATA_DIR}/grc/blocks)
 
 set(GR_REQUIRED_COMPONENTS RUNTIME)
-find_package(Gnuradio "3.8" REQUIRED)
+# find_package(Gnuradio "3.8" REQUIRED)
+find_package(Gnuradio "3.8")
+if(NOT Gnuradio_FOUND)
+    find_package(Gnuradio "3.9")
+	if(NOT Gnuradio_FOUND)
+	    message(FATAL_ERROR "Unable to find GNURadio 3.8 or 3.9")
+	ENDIF(NOT Gnuradio_FOUND)
+ENDIF(NOT Gnuradio_FOUND)
+include(GrVersion)
 
+include(GrPlatform) #define LIB_SUFFIX
 
 # Uninstall target
 configure_file(
