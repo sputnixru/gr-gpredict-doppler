@@ -21,6 +21,4 @@ templates:
 documentation: |-
     This block will take an input message pair and allow you to set a gnuradio variable.
 
-    WARNING: The variable cannot be tied to any QT UI control or it will throw an exception.
-
 file_format: 1
