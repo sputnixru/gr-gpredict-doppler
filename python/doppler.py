@@ -146,7 +146,7 @@ class doppler(gr.sync_block):
     return True
     
   def sendFreq(self,freq):
-    p = pmt.from_float(freq)
+    p = pmt.from_double(freq)
     self.message_port_pub(pmt.intern("freq"),pmt.cons(pmt.intern("freq"),p))
     
   def sendState(self,state):
