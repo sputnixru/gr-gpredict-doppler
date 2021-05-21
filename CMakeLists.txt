@@ -37,7 +37,7 @@ set(GRC_BLOCKS_DIR ${GR_PKG_DATA_DIR}/grc/blocks)
 
 set(GR_REQUIRED_COMPONENTS RUNTIME)
 include(FindPkgConfig)
-find_package(Gnuradio "3.9" REQUIRED)
+find_package(Gnuradio "3.8" REQUIRED)
 
 include(GrVersion)
 
