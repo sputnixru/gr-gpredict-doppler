@@ -200,7 +200,7 @@ class vel_doppler(gr.sync_block):
     return True
     
   def sendFrequency(self,freq):
-    self.message_port_pub(pmt.intern("frequency"),pmt.cons( pmt.intern("freq"), pmt.from_float(freq) ))
+    self.message_port_pub(pmt.intern("frequency"),pmt.cons( pmt.intern("freq"), pmt.from_double(freq) ))
 
   def sendFrequencyShift(self,freqshift):
-    self.message_port_pub(pmt.intern("freqshift"),pmt.cons( pmt.intern("freq"), pmt.from_float(freqshift) ))
+    self.message_port_pub(pmt.intern("freqshift"),pmt.cons( pmt.intern("freq"), pmt.from_double(freqshift) ))

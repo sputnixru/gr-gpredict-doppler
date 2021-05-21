@@ -17,7 +17,7 @@ class VarToMsgPair(gr.sync_block):
 
     def variable_changed(self, value):
         if type(value) == float:
-            p = pmt.from_float(value)
+            p = pmt.from_double(value)
         elif type(value) == int:
             p = pmt.from_long(value)
         elif type(value) == bool:
